@@ -12,8 +12,8 @@ import org.springframework.modulith.docs.Documenter;
  * modules) or if a cyclic dependency is introduced between modules. This is what
  * keeps the boundaries described in the README from rotting over time.
  *
- * <p>{@code writeDocumentation()} additionally emits PlantUML component diagrams and
- * a module canvas under {@code target/spring-modulith-docs} — handy for the
+ * <p>{@code writesDocumentation()} additionally emits PlantUML component diagrams
+ * and a module canvas under {@code build/spring-modulith-docs} — handy for the
  * "present it to your colleagues" part of the challenge.
  */
 class ModularityTests {
@@ -27,9 +27,13 @@ class ModularityTests {
 
     @Test
     void writesDocumentation() {
+        // Write under Gradle's build directory rather than the Modulith default (target/).
+        Documenter.Options options = Documenter.Options.defaults()
+                .withOutputFolder("build/spring-modulith-docs");
+
         new Documenter(modules)
-                .writeModulesAsPlantUml()
-                .writeIndividualModulesAsPlantUml()
-                .writeModuleCanvases();
+                .writeModulesAsPlantUml(options)
+                .writeIndividualModulesAsPlantUml(options)
+                .writeModuleCanvases(options);
     }
 }

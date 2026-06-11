@@ -22,7 +22,7 @@ Spring Modulith enforcing the module boundaries.
 | API docs           | springdoc-openapi (Swagger UI)                                      |
 | Observability      | Spring Boot Actuator + Micrometer / Prometheus                      |
 | Mail               | Spring Mail (`JavaMailSender`); MailHog for local fake SMTP         |
-| Build              | Maven                                                               |
+| Build              | Gradle (Kotlin DSL), with wrapper                                   |
 | Packaging          | Multi-stage Docker image; Docker Compose; Kubernetes manifests      |
 
 > **Why H2?** The challenge leaves the data layer open and asks for something a
@@ -124,7 +124,7 @@ or duplicate the others.
 
 ## Running it
 
-### Option A — Docker Compose (recommended; no local JDK/Maven needed)
+### Option A — Docker Compose (recommended; no local JDK/Gradle needed)
 
 ```bash
 docker compose up --build
@@ -138,19 +138,20 @@ This starts the service and MailHog. Compose sets the SMTP transport so real
 - H2 console: http://localhost:8080/h2-console (JDBC URL `jdbc:h2:mem:scheduling`, user `sa`, empty password)
 - Actuator health: http://localhost:8080/actuator/health
 
-### Option B — Maven
+### Option B — Gradle
 
 ```bash
-mvn spring-boot:run
+./gradlew bootRun
 ```
 
 Runs with the default **log** e-mail transport (no SMTP needed) — the confirmation
-e-mail is written to the application log.
+e-mail is written to the application log. The wrapper fetches the pinned Gradle
+version automatically, so no local Gradle install is required (just a JDK 21).
 
 ### Tests
 
 ```bash
-mvn test
+./gradlew test
 ```
 
 Includes the Modulith boundary verification, domain unit tests, and a full

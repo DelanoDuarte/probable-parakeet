@@ -1,16 +1,20 @@
 # syntax=docker/dockerfile:1
 
 # ---- Build stage --------------------------------------------------------------
-# Uses a Maven + JDK 21 image so the build needs no local JDK/Maven on the host.
-FROM maven:3.9-eclipse-temurin-21 AS build
+# JDK-only image; the Gradle wrapper pins and fetches Gradle itself, so the host
+# needs no local JDK or Gradle install.
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /build
 
-# Cache dependencies first: copy only the POM, resolve, then copy sources.
-COPY pom.xml .
-RUN mvn -B -q dependency:go-offline
+# Copy the wrapper + build scripts first and warm up the Gradle distribution, so
+# this layer is cached and only re-runs when the build configuration changes.
+COPY gradlew settings.gradle.kts build.gradle.kts ./
+COPY gradle ./gradle
+RUN ./gradlew --no-daemon --version
 
+# Then the sources. Tests run in CI / `./gradlew test`; the image build skips them.
 COPY src ./src
-RUN mvn -B -q clean package -DskipTests
+RUN ./gradlew --no-daemon clean bootJar -x test
 
 # ---- Runtime stage ------------------------------------------------------------
 # Slim JRE-only image; runs as a non-root user.
@@ -19,7 +23,8 @@ WORKDIR /app
 
 RUN groupadd --system app && useradd --system --gid app app
 
-COPY --from=build /build/target/*.jar app.jar
+# bootJar is configured to emit a fixed name (app.jar), so no globbing here.
+COPY --from=build /build/build/libs/app.jar app.jar
 RUN chown app:app app.jar
 
 USER app
