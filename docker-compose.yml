@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    image: uphill/appointment-scheduling:latest
+    container_name: appointment-scheduling
+    ports:
+      - "8080:8080"
+    environment:
+      # Switch to the real SMTP sender, pointed at MailHog. The booking → event →
+      # e-mail flow is exercised end to end; view delivered mail at http://localhost:8025
+      SCHEDULING_NOTIFICATIONS_TRANSPORT: smtp
+      SPRING_MAIL_HOST: mailhog
+      SPRING_MAIL_PORT: "1025"
+    depends_on:
+      mailhog:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health/readiness"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 40s
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: appointment-mailhog
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI

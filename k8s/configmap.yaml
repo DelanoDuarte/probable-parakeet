@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appointment-scheduling-config
+  namespace: scheduling
+data:
+  # In-cluster there is no MailHog, so notifications run on the log transport.
+  # Point this at a real SMTP relay (and add SPRING_MAIL_* env) for production mail.
+  SCHEDULING_NOTIFICATIONS_TRANSPORT: "log"
+  SPRING_PROFILES_ACTIVE: "default"

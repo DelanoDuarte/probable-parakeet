@@ -1,0 +1,100 @@
+spring:
+  application:
+    name: appointment-scheduling
+
+  # ----------------------------------------------------------------------------
+  # Data layer — H2 in-memory, running in PostgreSQL-compatibility mode so the
+  # SQL/DDL we rely on (and the dialect Hibernate emits) is close to the intended
+  # production target. The schema is created from the JPA model on startup.
+  # ----------------------------------------------------------------------------
+  datasource:
+    url: jdbc:h2:mem:scheduling;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # Spring Modulith persists event publications via JPA (spring-modulith-starter-jpa);
+  # the publication table is created by Hibernate alongside the application tables.
+  # On restart, any publications left incomplete by a crash are resubmitted.
+  modulith:
+    events:
+      republish-outstanding-events-on-restart: true
+
+  # Virtual threads — cheap per-request threads for a blocking JPA workload that
+  # must absorb thousands of requests/hour without a large platform-thread pool.
+  threads:
+    virtual:
+      enabled: true
+
+  # Mail is only contacted when scheduling.notifications.transport=smtp. Defaults
+  # here are harmless placeholders; docker-compose overrides host/port to MailHog.
+  mail:
+    host: localhost
+    port: 1025
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+# ------------------------------------------------------------------------------
+# Application-specific configuration.
+#   transport=log  -> LoggingEmailSender (default, no external deps)
+#   transport=smtp -> SmtpEmailSender (JavaMailSender, e.g. MailHog)
+# ------------------------------------------------------------------------------
+scheduling:
+  notifications:
+    transport: log
+
+# ------------------------------------------------------------------------------
+# Observability — Actuator with Kubernetes-style health probes and a Prometheus
+# scrape endpoint.
+# ------------------------------------------------------------------------------
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,modulith
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+# ------------------------------------------------------------------------------
+# OpenAPI / Swagger UI (springdoc).
+# ------------------------------------------------------------------------------
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.uphill.scheduling: INFO
+    org.springframework.modulith: INFO
