@@ -45,7 +45,7 @@ Starts the service and MailHog (fake SMTP). No local JDK or Gradle needed.
 
 No SMTP needed — confirmation emails are written to the log. Requires JDK 21; the Gradle wrapper handles the rest.
 
-Service runs on `http://localhost:8181`.
+Service runs on `http://localhost:8080`.
 
 ### Tests
 
@@ -64,7 +64,7 @@ Base path: `/api/v1/appointments`
 ### Book an appointment
 
 ```bash
-curl -X POST http://localhost:8181/api/v1/appointments \
+curl -X POST http://localhost:8080/api/v1/appointments \
   -H 'Content-Type: application/json' \
   -d '{
         "patientName":  "Maria Silva",
@@ -87,7 +87,7 @@ Seven doctors and five rooms are seeded at startup.
 ### List appointments
 
 ```bash
-curl http://localhost:8181/api/v1/appointments
+curl http://localhost:8080/api/v1/appointments
 ```
 
 Returns `200 OK` with all confirmed appointments.
