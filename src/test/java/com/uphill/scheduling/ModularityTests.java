@@ -28,12 +28,12 @@ class ModularityTests {
     @Test
     void writesDocumentation() {
         // Write under Gradle's build directory rather than the Modulith default (target/).
-        Documenter.Options options = Documenter.Options.defaults()
-                .withOutputFolder("build/spring-modulith-docs");
+        Documenter.DiagramOptions diagramOptions = Documenter.DiagramOptions.defaults();
+        Documenter.CanvasOptions canvasOptions = Documenter.CanvasOptions.defaults();
 
         new Documenter(modules)
-                .writeModulesAsPlantUml(options)
-                .writeIndividualModulesAsPlantUml(options)
-                .writeModuleCanvases(options);
+                .writeModulesAsPlantUml(diagramOptions)
+                .writeIndividualModulesAsPlantUml(diagramOptions)
+                .writeModuleCanvases(canvasOptions);
     }
 }

@@ -4,7 +4,7 @@ import com.uphill.scheduling.appointment.AppointmentBooked;
 import com.uphill.scheduling.integration.domain.DoctorCalendarClient;
 import com.uphill.scheduling.integration.domain.RoomReservationClient;
 
-import org.springframework.modulith.ApplicationModuleListener;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
 /**

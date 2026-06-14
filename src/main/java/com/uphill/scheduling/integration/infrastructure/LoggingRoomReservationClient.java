@@ -1,20 +1,12 @@
 package com.uphill.scheduling.integration.infrastructure;
 
 import com.uphill.scheduling.integration.domain.RoomReservationClient;
-
+import java.time.Instant;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.util.UUID;
-
-/**
- * Stand-in {@link RoomReservationClient} that logs the reservation it would make
- * against the external facilities system.
- *
- * @see LoggingDoctorCalendarClient for the production-shape rationale.
- */
 @Component
 class LoggingRoomReservationClient implements RoomReservationClient {
 

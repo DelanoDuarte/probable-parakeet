@@ -1,4 +1,6 @@
-package com.uphill.scheduling.appointment.domain;
+package com.uphill.scheduling.appointment.domain.exceptions;
+
+import com.uphill.scheduling.appointment.domain.TimeSlot;
 
 /**
  * Raised when a concurrent booking won the race for the same doctor/room slot,

@@ -3,15 +3,13 @@ package com.uphill.scheduling.notification.application;
 import com.uphill.scheduling.appointment.AppointmentBooked;
 import com.uphill.scheduling.notification.domain.EmailMessage;
 import com.uphill.scheduling.notification.domain.EmailSender;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.modulith.ApplicationModuleListener;
-import org.springframework.stereotype.Component;
-
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.modulith.events.ApplicationModuleListener;
+import org.springframework.stereotype.Component;
 
 /**
  * Sends the patient their confirmation e-mail once an appointment is booked.

@@ -3,6 +3,7 @@ package com.uphill.scheduling.doctor;
 /**
  * Medical specialty. Part of the doctor module's public API because a patient
  * requests an appointment <em>by specialty</em>, and doctors are classified by it.
+ * https://www.hl7.org/fhir/R4/valueset-c80-practice-codes.html
  */
 public enum Specialty {
     GENERAL_PRACTICE("General Practice"),

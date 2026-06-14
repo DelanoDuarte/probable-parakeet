@@ -3,6 +3,7 @@ package com.uphill.scheduling;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Entry point for the appointment scheduling service.
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * asynchronously, after the booking transaction commits.
  */
 @EnableAsync
+@EnableScheduling
 @SpringBootApplication
 public class SchedulingApplication {
 

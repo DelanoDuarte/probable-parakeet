@@ -1,8 +1,8 @@
 package com.uphill.scheduling.appointment.web;
 
-import com.uphill.scheduling.appointment.domain.NoDoctorAvailableException;
-import com.uphill.scheduling.appointment.domain.NoRoomAvailableException;
-import com.uphill.scheduling.appointment.domain.SlotAlreadyTakenException;
+import com.uphill.scheduling.appointment.domain.exceptions.NoDoctorAvailableException;
+import com.uphill.scheduling.appointment.domain.exceptions.NoRoomAvailableException;
+import com.uphill.scheduling.appointment.domain.exceptions.SlotAlreadyTakenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;

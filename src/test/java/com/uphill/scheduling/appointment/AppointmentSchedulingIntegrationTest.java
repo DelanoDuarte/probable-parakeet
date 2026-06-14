@@ -1,10 +1,10 @@
 package com.uphill.scheduling.appointment;
 
-import com.uphill.scheduling.appointment.application.AppointmentBookingService;
+import com.uphill.scheduling.appointment.application.BookAppointmentUseCase;
 import com.uphill.scheduling.appointment.application.AppointmentQueryService;
 import com.uphill.scheduling.appointment.application.BookAppointmentCommand;
 import com.uphill.scheduling.appointment.domain.Appointment;
-import com.uphill.scheduling.appointment.domain.NoDoctorAvailableException;
+import com.uphill.scheduling.appointment.domain.exceptions.NoDoctorAvailableException;
 import com.uphill.scheduling.doctor.Specialty;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class AppointmentSchedulingIntegrationTest {
 
     @Autowired
-    AppointmentBookingService bookingService;
+    BookAppointmentUseCase bookingService;
 
     @Autowired
     AppointmentQueryService queryService;

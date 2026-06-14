@@ -27,14 +27,16 @@ public class PatientInfo {
     }
 
     public PatientInfo(String name, String email) {
-        if (name == null || name.isBlank()) {
+        String trimmedName = name == null ? "" : name.strip();
+        String trimmedEmail = email == null ? "" : email.strip();
+        if (trimmedName.isBlank()) {
             throw new IllegalArgumentException("Patient name must not be blank");
         }
-        if (email == null || !EMAIL.matcher(email).matches()) {
+        if (trimmedEmail.isEmpty() || !EMAIL.matcher(trimmedEmail).matches()) {
             throw new IllegalArgumentException("Patient e-mail is not valid: " + email);
         }
-        this.name = name.strip();
-        this.email = email.strip();
+        this.name = trimmedName;
+        this.email = trimmedEmail;
     }
 
     public String name() {

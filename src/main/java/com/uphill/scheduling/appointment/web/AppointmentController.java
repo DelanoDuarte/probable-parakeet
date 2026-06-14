@@ -1,8 +1,8 @@
 package com.uphill.scheduling.appointment.web;
 
-import com.uphill.scheduling.appointment.application.AppointmentBookingService;
-import com.uphill.scheduling.appointment.application.AppointmentQueryService;
 import com.uphill.scheduling.appointment.application.BookAppointmentCommand;
+import com.uphill.scheduling.appointment.application.BookAppointmentUseCase;
+import com.uphill.scheduling.appointment.application.AppointmentQueryService;
 import com.uphill.scheduling.appointment.web.dto.AppointmentResponse;
 import com.uphill.scheduling.appointment.web.dto.BookAppointmentRequest;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +13,11 @@ import java.util.List;
 @RestController
 class AppointmentController implements AppointmentApi {
 
-    private final AppointmentBookingService bookingService;
+    private final BookAppointmentUseCase bookAppointment;
     private final AppointmentQueryService queryService;
 
-    AppointmentController(AppointmentBookingService bookingService, AppointmentQueryService queryService) {
-        this.bookingService = bookingService;
+    AppointmentController(BookAppointmentUseCase bookAppointment, AppointmentQueryService queryService) {
+        this.bookAppointment = bookAppointment;
         this.queryService = queryService;
     }
 
@@ -29,7 +29,7 @@ class AppointmentController implements AppointmentApi {
                 request.specialty(),
                 request.start(),
                 request.end());
-        return AppointmentResponse.from(bookingService.book(command));
+        return AppointmentResponse.from(bookAppointment.book(command));
     }
 
     @Override
