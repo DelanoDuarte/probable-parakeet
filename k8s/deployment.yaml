@@ -22,6 +22,7 @@ spec:
       containers:
         - name: app
           image: uphill/appointment-scheduling:latest
+          imagePullPolicy: Never # Remove it in case wants to pull from docker registry
           ports:
             - name: http
               containerPort: 8080
