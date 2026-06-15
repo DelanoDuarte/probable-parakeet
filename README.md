@@ -144,6 +144,45 @@ Post-booking listeners use Spring Modulith's Event Publication Registry. Each li
 
 ### Kubernetes
 
+The image must be built locally before applying the manifests. The deployment uses `imagePullPolicy: Never` — remove that line if you want to pull from a registry instead.
+
+**1 — Build the image**
+```bash
+docker build -t uphill/appointment-scheduling:latest .
+```
+
+**2 — Load into the cluster** (skip for Docker Desktop K8s — image is available automatically)
+
+minikube:
+```bash
+minikube image load uphill/appointment-scheduling:latest
+```
+
+kind:
+```bash
+kind load docker-image uphill/appointment-scheduling:latest
+```
+
+**3 — Apply manifests**
 ```bash
 kubectl apply -f k8s/
+```
+
+**4 — Wait for pods**
+```bash
+kubectl rollout status deployment/appointment-scheduling -n scheduling
+```
+
+**5 — Port-forward and access**
+```bash
+kubectl port-forward -n scheduling svc/appointment-scheduling 8080:80
+```
+
+API and Swagger UI available at `http://localhost:8080`.
+
+**Useful commands**
+```bash
+kubectl get pods -n scheduling
+kubectl logs -n scheduling -l app=appointment-scheduling --follow
+kubectl get hpa -n scheduling
 ```
